@@ -11,8 +11,8 @@ public class Player extends PhysicObject{
 	public Player(int x, int y) {
 		super(x, y,false);
 		// TODO Auto-generated constructor stub
-		lenght = 50;
-		height = 50;
+		lenght = 35;
+		height = 35;
 		visible = true;
 		gravity = true;
 		color = Color.BLUE;
