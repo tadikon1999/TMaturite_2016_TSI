@@ -171,9 +171,9 @@ public class World {
 				
 			//vel en x et "friction"
 			if (board.isPressed("vK_D")&&!board.isPressed("vK_A")){
-				player.setVelX(player.getVelX()+6);
+				player.setVelX(player.getVelX()+4);
 			} else if(board.isPressed("vK_A")&&!board.isPressed("vK_D")){
-				player.setVelX(player.getVelX()-6);
+				player.setVelX(player.getVelX()-4);
 			} else if(stable&&player.getVelX()<0){
 				player.setVelX(player.getVelX()+2);
 			} else if (stable&&player.getVelX()>0){
@@ -226,28 +226,30 @@ public class World {
 			player.setVelX(12);
 		}
 		
-		
-		//mouvement en x et y!
-		player.setY(player.getY()+player.getVelY());
-		player.setX(player.getX()+player.getVelX());
-		
+		if(Collides(player, enemies)){
+			player.setX(680);
+			player.setY(680);
+			player.setVelX(0);
+			player.setVelY(0);
+		}
 		
 		//objet fin
-		if(CollidesDown(player, end)||CollidesUp(player, end)
-				||CollidesLeft(player, end)||CollidesRight(player, end)){
+		if(Collides(player, end)){
 			player.setX(200);
 			player.setY(680);
 			player.setVelX(0);
 			player.setVelY(0);
 		}
 		
-		if(CollidesDown(player, enemies)||CollidesUp(player, enemies)
-				||CollidesLeft(player, enemies)||CollidesRight(player, enemies)){
-			player.setX(680);
-			player.setY(680);
-			player.setVelX(0);
-			player.setVelY(0);
-		}
+		
+		//mouvement en x et y!
+		player.setY(player.getY()+player.getVelY());
+		player.setX(player.getX()+player.getVelX());
+		
+		
+		
+		
+		
 		
 		
 		//reset
@@ -470,6 +472,33 @@ public class World {
 		}
 		
 		return stable;
+	}
+	
+	private boolean Collides(PhysicObject object, PhysicObject object2){
+		boolean col = false;
+		
+		
+		if (object.getX()+object.getLenght()>=object2.getX()
+				&& object.getX()<=object2.getX()+object2.getLenght()
+				&& object.getY()+object.getHeight()>=object2.getY() 
+				&& object.getY()<=object2.getY()+object2.getHeight()){
+			col = true;
+			}
+		return col; 
+	}
+	
+	private boolean Collides(PhysicObject object, PhysicObject[] object2){
+		boolean col = false;
+		
+		for (int i=0;i<object2.length;i++){
+		if (object.getX()+object.getLenght()>=object2[i].getX()
+				&& object.getX()<=object2[i].getX()+object2[i].getLenght()
+				&& object.getY()+object.getHeight()>=object2[i].getY() 
+				&& object.getY()<=object2[i].getY()+object2[i].getHeight()){
+			col = true;
+			}
+		}
+		return col; 
 	}
 
 }

@@ -6,6 +6,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		//String path = System.get
 		 World world= new World("C:/Users/Tadeusz/Desktop/test.txt");
 		 Frame display=new Frame();
 		 
