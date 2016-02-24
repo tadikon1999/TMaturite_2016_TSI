@@ -3,6 +3,7 @@ package tests;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.chrono.IsoChronology;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class World {
@@ -13,9 +14,11 @@ public class World {
 	static End end = new End(0, 0);
 	static Enemy[] enemies;
 	static Player player = new Player(0,0);
+	private static ArrayList<PhysicObject> Objects = new ArrayList<PhysicObject>();
 	private Keyboard board = new Keyboard();
 	private DataReader reader = new DataReader();
 	private char[][] box;
+	
 	
 	
 	public World(String myFileLocation){
@@ -33,16 +36,34 @@ public class World {
 			//e.printStackTrace();
 		}
 
-		int i =0;
-		box = new char[20][20];
+		int i =1;
+		int lenght = 0;
+		int height;
+		Scanner scanner2 = new Scanner(s);
+		
+		while (scanner2.hasNextLine()){
+			String line = scanner2.nextLine();
+			
+			lenght = line.length();
+			i++;
+		}
+		height = i;
+		
+		scanner2.close();
+		
+		System.out.println(height);
 		Scanner scanner = new Scanner(s);
-		while (scanner.hasNextLine()&&i<20) {
+		
+		i=0;
+		box = new char[lenght][height];
+		
+		while (scanner.hasNextLine()&&i<height) {
 		  String line = scanner.nextLine();
 		  System.out.println("line: "+i);
 		  System.out.println(line);
 		  
 
-		  for(int k=0;k<20;k++){
+		  for(int k=0;k<lenght;k++){
 			  System.out.println(k+"  "+i);
 				 box[k][i] = line.toCharArray()[k];
 				 
@@ -55,8 +76,8 @@ public class World {
 		int ene=0;
 		int blocks = 0;
 		
-		for (int j =0;j<20;j++){
-			for(int m =0;m<20;m++){
+		for (int j =0;j<lenght;j++){
+			for(int m =0;m<height;m++){
 				if(box[j][m]=='0'){
 					
 					
@@ -78,29 +99,37 @@ public class World {
 		blocks = 0;
 		ene = 0;
 		
-		for (int j =0;j<20;j++){
-			for(int m =0;m<20;m++){
+		for (int j =0;j<lenght;j++){
+			for(int m =0;m<height;m++){
 				if(box[j][m]=='0'){
 					
 					World.walls[blocks] = new Block(j*40,m*40);
 					blocks++;
+					Objects.add(new Block(j*40,m*40));
 				}
 				if(box[j][m]=='m'){
 					
 					World.enemies[ene] = new Enemy(j*40,m*40);
 					ene++;
+					Objects.add(new Enemy(j*40,m*40));
 				}
 				if(box[j][m]=='p'){
-					player.setX(j*40);
-					player.setY(m*40);
+					player.setStartX(j*40);
+					player.setStartY(m*40);
 				}
 				if(box[j][m]=='e'){
 					end.setX(j*40);
 					end.setY(m*40);
+					Objects.add(new End(j*40,m*40));
 				}
 			}
 			
 		}
+		
+		player.setX(player.getStartX());
+		player.setY(player.getStartY());
+		
+		Objects.add(player);
 	
 		
 
@@ -130,7 +159,7 @@ public class World {
 			collision = false;
 
 		
-			collision=CollidesDown(player, walls);
+			collision=CollidesDown(player, "block");
 		
 		if (collision == true){
 			player.setVelY(player.getVelY()-1);
@@ -147,7 +176,7 @@ public class World {
 			collision = false;
 		
 	
-			collision = CollidesUp(player, walls);
+			collision = CollidesUp(player, "block");
 		
 		if (collision == true){
 			player.setVelY(player.getVelY()+1);
@@ -161,7 +190,7 @@ public class World {
 
 		//sur une platforme?
 		
-		stable=IsStableOn(player, walls);
+		stable=IsStableOn(player, "block");
 		
 		
 		//saut
@@ -189,7 +218,7 @@ public class World {
 				
 				collision = false;
 				
-				collision = CollidesRight(player, walls);
+				collision = CollidesRight(player, "block");
 			
 			if (collision == true){
 				player.setVelX(player.getVelX()-1);
@@ -205,7 +234,7 @@ public class World {
 				collision = false;
 			
 			
-				collision = CollidesLeft(player, walls);
+				collision = CollidesLeft(player, "block");
 			
 			if (collision == true){
 				player.setVelX(player.getVelX()+1);
@@ -226,19 +255,13 @@ public class World {
 			player.setVelX(12);
 		}
 		
-		if(Collides(player, enemies)){
-			player.setX(680);
-			player.setY(680);
-			player.setVelX(0);
-			player.setVelY(0);
+		if(Collides(player, "enemy")){
+			reset();
 		}
 		
 		//objet fin
-		if(Collides(player, end)){
-			player.setX(200);
-			player.setY(680);
-			player.setVelX(0);
-			player.setVelY(0);
+		if(Collides(player, "end")){
+			reset();
 		}
 		
 		
@@ -254,16 +277,13 @@ public class World {
 		
 		//reset
 		if(board.isPressed("vK_R")){
-			player.setX(680);
-			player.setY(680);
-			player.setVelX(0);
-			player.setVelY(0);
+			reset();
 		}
 		
-		if(board.isPressed("vK_W")){
+		if(board.isPressed("vK_W")&&stable){
 			gravity = -2;
 		} 
-		if(board.isPressed("vK_S")){
+		if(board.isPressed("vK_S")&&stable){
 			gravity = 2;
 		}
 		
@@ -283,7 +303,7 @@ public class World {
 	
 	
 	
-	//gets et sets
+	//gets and sets
 	public Player getPlayer(){
 		return player;
 	}
@@ -311,14 +331,15 @@ public class World {
 	
 	//funcs de collisions!
 	//haut
-	private boolean CollidesUp(PhysicObject player, PhysicObject[] solids){
+	private boolean CollidesUp(PhysicObject player, String type){
 		boolean collision = false;
 		
-		for (int i=0;i<solids.length;i++){
-			if (player.getY()+player.getVelY()>=solids[i].getY()
-					&& player.getY()+player.getVelY()<=solids[i].getY()+solids[i].getLenght()
-					&& solids[i].getX()-player.getLenght()<=player.getX() 
-					&& solids[i].getX()+solids[i].getLenght()>=player.getX()){
+		for (int i=0;i<Objects.size();i++){
+			if (player.getY()+player.getVelY()>=Objects.get(i).getY()
+					&& player.getY()+player.getVelY()<=Objects.get(i).getY()+Objects.get(i).getLenght()
+					&& Objects.get(i).getX()-player.getLenght()<=player.getX() 
+					&& Objects.get(i).getX()+Objects.get(i).getLenght()>=player.getX()
+					&&Objects.get(i).getType()==type){
 				collision = true;
 				} 
 			}
@@ -326,30 +347,17 @@ public class World {
 		return collision;
 		
 	}
-	private boolean CollidesUp(PhysicObject player, PhysicObject solid){
-		boolean collision = false;
-		
-		
-		if (player.getY()+player.getVelY()>=solid.getY()
-				&& player.getY()+player.getVelY()<=solid.getY()+solid.getHeight()
-				&& solid.getX()-player.getLenght()<=player.getX() 
-				&& solid.getX()+solid.getLenght()>=player.getX()){
-			collision = true;
-			} 
-			
-		
-		return collision;
-		
-	}
+
 	//bas
-	private boolean CollidesDown(PhysicObject player, PhysicObject[] solids){
+	private boolean CollidesDown(PhysicObject player, String type){
 		boolean collision = false;
 		
-		for (int i=0;i<solids.length;i++){
-			if (player.getY()+player.getVelY()+player.getHeight()>=solids[i].getY()
-					&& player.getY()+player.getVelY()+player.getHeight()<=solids[i].getY()+solids[i].getHeight()
-					&& solids[i].getX()-player.getLenght()<=player.getX() 
-					&& solids[i].getX()+solids[i].getLenght()>=player.getX()){
+		for (int i=0;i<Objects.size();i++){
+			if (player.getY()+player.getVelY()+player.getHeight()>=Objects.get(i).getY()
+					&& player.getY()+player.getVelY()+player.getHeight()<=Objects.get(i).getY()+Objects.get(i).getHeight()
+					&& Objects.get(i).getX()-player.getLenght()<=player.getX() 
+					&& Objects.get(i).getX()+Objects.get(i).getLenght()>=player.getX()
+					&& Objects.get(i).getType()==type){
 				collision = true;
 				} 
 			}
@@ -357,30 +365,17 @@ public class World {
 		return collision;
 		
 	}
-	private boolean CollidesDown(PhysicObject player, PhysicObject solid){
-		boolean collision = false;
-		
-		
-		if (player.getY()+player.getVelY()+player.getHeight()>=solid.getY()
-				&& player.getY()+player.getVelY()+player.getHeight()<=solid.getY()+solid.getHeight()
-				&& solid.getX()-player.getLenght()<=player.getX() 
-				&& solid.getX()+solid.getLenght()>=player.getX()){
-			collision = true;
-			} 
-			
-		
-		return collision;
-		
-	}
+
 	//droite
-	private boolean CollidesRight(PhysicObject player, PhysicObject[] solids){
+	private boolean CollidesRight(PhysicObject player, String type){
 		boolean collision = false;
 		
-		for (int i=0;i<solids.length;i++){
-			if (player.getX()+player.getVelX()+player.getLenght()>=solids[i].getX()
-					&& player.getX()+player.getVelX()+player.getLenght()<=solids[i].getX()+solids[i].getLenght()
-					&& solids[i].getY()-player.getHeight()<=player.getY() 
-					&& solids[i].getY()+solids[i].getHeight()>=player.getY()){
+		for (int i=0;i<Objects.size();i++){
+			if (player.getX()+player.getVelX()+player.getLenght()>=Objects.get(i).getX()
+					&& player.getX()+player.getVelX()+player.getLenght()<=Objects.get(i).getX()+Objects.get(i).getLenght()
+					&& Objects.get(i).getY()-player.getHeight()<=player.getY() 
+					&& Objects.get(i).getY()+Objects.get(i).getHeight()>=player.getY()
+					&&Objects.get(i).getType()==type){
 				collision = true;
 				} 
 			}
@@ -388,30 +383,17 @@ public class World {
 		return collision;
 		
 	}
-	private boolean CollidesRight(PhysicObject player, PhysicObject solid){
-		boolean collision = false;
-		
-		
-		if (player.getX()+player.getVelX()+player.getLenght()>=solid.getX()
-				&& player.getX()+player.getVelX()+player.getLenght()<=solid.getX()+solid.getLenght()
-				&& solid.getY()-player.getHeight()<=player.getY() 
-				&& solid.getY()+solid.getLenght()>=player.getY()){
-			collision = true;
-			} 
-			
-		
-		return collision;
-		
-	}
+
 	//gauche
-	private boolean CollidesLeft(PhysicObject player, PhysicObject[] solids){
+	private boolean CollidesLeft(PhysicObject player, String type){
 		boolean collision = false;
 		
-		for (int i=0;i<solids.length;i++){
-			if (player.getX()+player.getVelX()>=solids[i].getX()
-					&& player.getX()+player.getVelX()<=solids[i].getX()+solids[i].getLenght()
-					&& solids[i].getY()-player.getHeight()<=player.getY() 
-					&& solids[i].getY()+solids[i].getHeight()>=player.getY()){
+		for (int i=0;i<Objects.size();i++){
+			if (player.getX()+player.getVelX()>=Objects.get(i).getX()
+					&& player.getX()+player.getVelX()<=Objects.get(i).getX()+Objects.get(i).getLenght()
+					&& Objects.get(i).getY()-player.getHeight()<=player.getY() 
+					&& Objects.get(i).getY()+Objects.get(i).getHeight()>=player.getY()
+					&&Objects.get(i).getType()==type){
 				collision = true;
 				} 
 			}
@@ -419,29 +401,18 @@ public class World {
 		return collision;
 		
 	}
-	private boolean CollidesLeft(PhysicObject player, PhysicObject solid){
-		boolean collision = false;
-		
-		
-		if (player.getX()+player.getVelX()>=solid.getX()
-				&& player.getX()+player.getVelX()<=solid.getX()+solid.getLenght()
-				&& solid.getY()-player.getHeight()<=player.getY() 
-				&& solid.getY()+solid.getHeight()>=player.getY()){
-			collision = true;
-			} 
-			
-		
-		return collision;
-		
-	}
+	
 	//stable?
-	private boolean IsStableOn(PhysicObject object, PhysicObject[] ground){
+
+	
+	private boolean IsStableOn(PhysicObject object, String type){
 		boolean stable = false;
 		if (gravity>0){
-			for (int i=0;i<ground.length;i++){
-				if (object.getVelY()==0&&object.getY()+(object.getHeight()+1)==ground[i].getY() 
-						&& ground[i].getX()-object.getLenght()<=object.getX() 
-						&& ground[i].getX()+ground[i].getLenght()>=object.getX()){
+			for (int i=0;i<Objects.size();i++){
+				if (object.getVelY()==0&&object.getY()+(object.getHeight()+1)==Objects.get(i).getY() 
+						&& Objects.get(i).getX()-object.getLenght()<=object.getX() 
+						&& Objects.get(i).getX()+Objects.get(i).getLenght()>=object.getX()
+						&&Objects.get(i).getType()==type){
 					stable = true;
 				
 				}
@@ -449,56 +420,56 @@ public class World {
 			}
 		}
 		if (gravity<0){
-			for (int i=0;i<ground.length;i++){
-				if (object.getVelY()==0&&object.getY()-(ground[i].getHeight()+1)==ground[i].getY() 
-						&& ground[i].getX()-object.getLenght()<=object.getX() 
-						&& ground[i].getX()+ground[i].getLenght()>=object.getX()){
+			for (int i=0;i<Objects.size();i++){
+				if (object.getVelY()==0&&object.getY()-(Objects.get(i).getHeight()+1)==Objects.get(i).getY() 
+						&& Objects.get(i).getX()-object.getLenght()<=object.getX() 
+						&& Objects.get(i).getX()+Objects.get(i).getLenght()>=object.getX()
+						&&Objects.get(i).getType()==type){
 					stable = true;
 					
 				}
 			
 			}
 		}
+		
 		return stable;
 	}
-	private boolean IsStableOn(PhysicObject object, PhysicObject ground){
-		boolean stable = false;
+	
 
-		if (object.getVelY()==0&&object.getY()+object.getHeight()+1==ground.getY() 
-				&& ground.getX()-object.getLenght()<=object.getX() 
-				&& ground.getX()+ground.getLenght()>=object.getX()){
-			stable = true;
-				
-		}
-		
-		return stable;
-	}
 	
-	private boolean Collides(PhysicObject object, PhysicObject object2){
+	private boolean Collides(PhysicObject object, String type){
 		boolean col = false;
 		
-		
-		if (object.getX()+object.getLenght()>=object2.getX()
-				&& object.getX()<=object2.getX()+object2.getLenght()
-				&& object.getY()+object.getHeight()>=object2.getY() 
-				&& object.getY()<=object2.getY()+object2.getHeight()){
-			col = true;
-			}
-		return col; 
-	}
-	
-	private boolean Collides(PhysicObject object, PhysicObject[] object2){
-		boolean col = false;
-		
-		for (int i=0;i<object2.length;i++){
-		if (object.getX()+object.getLenght()>=object2[i].getX()
-				&& object.getX()<=object2[i].getX()+object2[i].getLenght()
-				&& object.getY()+object.getHeight()>=object2[i].getY() 
-				&& object.getY()<=object2[i].getY()+object2[i].getHeight()){
+		for (int i=0;i<Objects.size();i++){
+		if (object.getX()+object.getLenght()>=Objects.get(i).getX()
+				&& object.getX()<=Objects.get(i).getX()+Objects.get(i).getLenght()
+				&& object.getY()+object.getHeight()>=Objects.get(i).getY() 
+				&& object.getY()<=Objects.get(i).getY()+Objects.get(i).getHeight()
+				&&Objects.get(i).getType()==type){
 			col = true;
 			}
 		}
 		return col; 
+	}
+	
+	
+	public void reset(){
+		player.setX(player.startX);
+		player.setY(player.startY);
+		player.setVelX(0);
+		player.setVelY(0);
+		gravity = 2;
+	}
+
+	
+	
+	
+	public static ArrayList<PhysicObject> getObjects() {
+		return Objects;
+	}
+
+	public static void setObjects(ArrayList<PhysicObject> objects) {
+		Objects = objects;
 	}
 
 }

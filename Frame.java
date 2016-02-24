@@ -1,5 +1,7 @@
 package tests;
 
+import java.awt.Color;
+
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -19,6 +21,7 @@ public class Frame extends JFrame{
 		this.addKeyListener(listener);
 		
 		this.setVisible(true);
+		this.setBackground(Color.white);
 		
 	}
 	public Panel getPan() {

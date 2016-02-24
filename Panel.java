@@ -10,6 +10,8 @@ public class Panel extends JPanel{
 	
 	private Player player = World.player;
 	private Block[] walls = World.walls;
+	int x = 0;
+	int y = 0;
 	
 	public Panel(){
 		
@@ -26,13 +28,43 @@ public class Panel extends JPanel{
 	}
 	
 	public void paintComponent(Graphics g){
+		this.setLocation(x, y);
+		this.setBackground(Color.white);
 		g.setColor(Color.white);
-
+		
+		while(x+300>player.getX()){
+			
+			x--;
+			
+		}
+		
+		while(x+1100<player.getX()){
+			x++;
+		}
+		
+		while(y+300>player.getY()){
+			
+			y--;
+			
+		}
+		
+		while(y+800<player.getY()){
+			y++;
+		}
+		
+		this.setLocation(1, 1);
+		this.setLocation(0, 0);
+		
+		
+		
 		//this.setLocation(-player.getX()+450, -player.getY()+450);
 
-		g.clearRect(-1000, -1000, 2000, 2000);
-		g.setColor(/*player.getColor()*/Color.blue);
-		g.fillRect(player.getX(), player.getY(), player.getLenght(), player.getHeight());
+		for(int i=0;i<World.getObjects().size();i++){
+				
+			World.getObjects().get(i).paint(g, -x, -y);
+			
+		}
+		/*
 		for (int i=0;i < walls.length; i++){
 			g.setColor(walls[i].getColor());
 			g.fillRect(walls[i].getX(), walls[i].getY(), walls[i].getLenght(), walls[i].getHeight());
@@ -43,7 +75,7 @@ public class Panel extends JPanel{
 		}
 		g.setColor(Color.red);
 		g.fillRect(World.end.getX(), World.end.getY(), World.end.getLenght(), World.end.getHeight());
-	}
+	*/}
 
 	
 	

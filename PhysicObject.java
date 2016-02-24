@@ -1,6 +1,7 @@
 package tests;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 public class PhysicObject {
 	int x;
@@ -9,6 +10,7 @@ public class PhysicObject {
 	int height;
 	int velY;
 	int velX;
+	String type = "none";
 	
 	boolean visible = false;
 	boolean gravity = false;
@@ -67,5 +69,16 @@ public class PhysicObject {
 
 	public void setVelY(int velY) {
 		this.velY = velY;
+	}
+	
+	public String getType(){
+		return type;
+	}
+	public void setType(String type){
+		this.type = type;
+	}
+	
+	public void paint( Graphics g,int mx, int my){
+		
 	}
 }
