@@ -1,13 +1,20 @@
 package tests;
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Properties;
+
 public class Main {
-	
+	static String s = "";
 
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		//String path = System.get
-		 World world= new World("C:/Users/Tadeusz/Desktop/test.txt");
+		s = Main.class.getClassLoader().getResource("").toExternalForm();
+		s=s.substring(6)+"tests/test";
+		System.out.println(s);
+		 World world= new World(s);
 		 Frame display=new Frame();
 		 
 		while(true){

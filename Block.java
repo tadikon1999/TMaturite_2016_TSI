@@ -2,6 +2,7 @@ package tests;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 public class Block extends PhysicObject{
 
@@ -22,6 +23,10 @@ public class Block extends PhysicObject{
 
 		g.setColor(this.getColor());
 		g.fillRect(this.getX()+mx, this.getY()+my, this.getLenght(), this.getHeight());
+		
+	}
+	@Override
+	public void tick(ArrayList<PhysicObject> Objects){
 		
 	}
 

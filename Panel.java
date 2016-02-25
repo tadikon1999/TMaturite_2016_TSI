@@ -32,13 +32,13 @@ public class Panel extends JPanel{
 		this.setBackground(Color.white);
 		g.setColor(Color.white);
 		
-		while(x+300>player.getX()){
+		while(x+500>player.getX()){
 			
 			x--;
 			
 		}
 		
-		while(x+1100<player.getX()){
+		while(x+1400<player.getX()){
 			x++;
 		}
 		

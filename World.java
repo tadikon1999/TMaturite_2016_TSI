@@ -8,14 +8,14 @@ import java.util.Scanner;
 
 public class World {
 	
-	int gravity = 2;
+	static int gravity = 2;
 	static int width = 800;
 	static Block[] walls;
 	static End end = new End(0, 0);
 	static Enemy[] enemies;
 	static Player player = new Player(0,0);
 	private static ArrayList<PhysicObject> Objects = new ArrayList<PhysicObject>();
-	private Keyboard board = new Keyboard();
+	private static Keyboard board = new Keyboard();
 	private DataReader reader = new DataReader();
 	private char[][] box;
 	
@@ -32,10 +32,9 @@ public class World {
 		try {
 			s = this.reader.readFile(myFileLocation,StandardCharsets.UTF_8);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			
 		}
-
+		System.out.println(s);
 		int i =1;
 		int lenght = 0;
 		int height;
@@ -51,7 +50,7 @@ public class World {
 		
 		scanner2.close();
 		
-		System.out.println(height);
+		
 		Scanner scanner = new Scanner(s);
 		
 		i=0;
@@ -59,12 +58,11 @@ public class World {
 		
 		while (scanner.hasNextLine()&&i<height) {
 		  String line = scanner.nextLine();
-		  System.out.println("line: "+i);
-		  System.out.println(line);
+		  
 		  
 
 		  for(int k=0;k<lenght;k++){
-			  System.out.println(k+"  "+i);
+			  
 				 box[k][i] = line.toCharArray()[k];
 				 
 		  }
@@ -137,7 +135,7 @@ public class World {
 	
 	public void iterate(){
 		
-		
+	/*	
 		//collision et mouvement vertical
 		boolean collision = false;
 		boolean stable = false;
@@ -159,7 +157,7 @@ public class World {
 			collision = false;
 
 		
-			collision=CollidesDown(player, "block");
+			collision=CollidesDown(player, "block",Objects);
 		
 		if (collision == true){
 			player.setVelY(player.getVelY()-1);
@@ -176,7 +174,7 @@ public class World {
 			collision = false;
 		
 	
-			collision = CollidesUp(player, "block");
+			collision = CollidesUp(player, "block",Objects);
 		
 		if (collision == true){
 			player.setVelY(player.getVelY()+1);
@@ -190,7 +188,7 @@ public class World {
 
 		//sur une platforme?
 		
-		stable=IsStableOn(player, "block");
+		stable=IsStableOn(player, "block",Objects);
 		
 		
 		//saut
@@ -218,7 +216,7 @@ public class World {
 				
 				collision = false;
 				
-				collision = CollidesRight(player, "block");
+				collision = CollidesRight(player, "block",Objects);
 			
 			if (collision == true){
 				player.setVelX(player.getVelX()-1);
@@ -234,7 +232,7 @@ public class World {
 				collision = false;
 			
 			
-				collision = CollidesLeft(player, "block");
+				collision = CollidesLeft(player, "block",Objects);
 			
 			if (collision == true){
 				player.setVelX(player.getVelX()+1);
@@ -255,21 +253,23 @@ public class World {
 			player.setVelX(12);
 		}
 		
-		if(Collides(player, "enemy")){
+		if(Collides(player, "enemy",Objects)){
 			reset();
 		}
 		
 		//objet fin
-		if(Collides(player, "end")){
+		if(Collides(player, "end",Objects)){
 			reset();
 		}
 		
 		
 		//mouvement en x et y!
 		player.setY(player.getY()+player.getVelY());
-		player.setX(player.getX()+player.getVelX());
+		player.setX(player.getX()+player.getVelX());*/
 		
-		
+		for(int i=0;i<Objects.size();i++){
+			Objects.get(i).tick(Objects);
+		}
 		
 		
 		
@@ -279,19 +279,19 @@ public class World {
 		if(board.isPressed("vK_R")){
 			reset();
 		}
-		
+		/*
 		if(board.isPressed("vK_W")&&stable){
 			gravity = -2;
 		} 
 		if(board.isPressed("vK_S")&&stable){
 			gravity = 2;
-		}
+		}*/
 		
 		// TIME MASTER
 		try {
 			Thread.sleep(40);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		
@@ -304,7 +304,7 @@ public class World {
 	
 	
 	//gets and sets
-	public Player getPlayer(){
+	public static Player getPlayer(){
 		return player;
 	}
 	
@@ -312,7 +312,7 @@ public class World {
 		return walls;
 	}
 
-	public Keyboard getBoard() {
+	public static Keyboard getBoard() {
 		return board;
 	}
 
@@ -331,7 +331,7 @@ public class World {
 	
 	//funcs de collisions!
 	//haut
-	private boolean CollidesUp(PhysicObject player, String type){
+	private boolean CollidesUp(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
 		boolean collision = false;
 		
 		for (int i=0;i<Objects.size();i++){
@@ -349,7 +349,7 @@ public class World {
 	}
 
 	//bas
-	private boolean CollidesDown(PhysicObject player, String type){
+	private boolean CollidesDown(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
 		boolean collision = false;
 		
 		for (int i=0;i<Objects.size();i++){
@@ -367,7 +367,7 @@ public class World {
 	}
 
 	//droite
-	private boolean CollidesRight(PhysicObject player, String type){
+	private boolean CollidesRight(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
 		boolean collision = false;
 		
 		for (int i=0;i<Objects.size();i++){
@@ -385,7 +385,7 @@ public class World {
 	}
 
 	//gauche
-	private boolean CollidesLeft(PhysicObject player, String type){
+	private boolean CollidesLeft(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
 		boolean collision = false;
 		
 		for (int i=0;i<Objects.size();i++){
@@ -405,7 +405,7 @@ public class World {
 	//stable?
 
 	
-	private boolean IsStableOn(PhysicObject object, String type){
+	private boolean IsStableOn(PhysicObject object, String type, ArrayList<PhysicObject> Objects){
 		boolean stable = false;
 		if (gravity>0){
 			for (int i=0;i<Objects.size();i++){
@@ -437,7 +437,7 @@ public class World {
 	
 
 	
-	private boolean Collides(PhysicObject object, String type){
+	private boolean Collides(PhysicObject object, String type, ArrayList<PhysicObject> Objects){
 		boolean col = false;
 		
 		for (int i=0;i<Objects.size();i++){
@@ -453,7 +453,7 @@ public class World {
 	}
 	
 	
-	public void reset(){
+	public static void reset(){
 		player.setX(player.startX);
 		player.setY(player.startY);
 		player.setVelX(0);
