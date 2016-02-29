@@ -64,15 +64,26 @@ public class Player extends PhysicObject{
 		//collision et mouvement vertical
 				boolean collision = false;
 				boolean stable = false;
+				//sur une platforme?
+				
+				stable=IsStableOn(this, "block",Objects);
+				
 				this.setVelY(this.getVelY()+World.gravity);
 				
 				
-				//max verticale
+				//max vertical
 				if(this.getVelY()>this.getHeight()-1){
 					this.setVelY(this.getHeight()-1);
 				}else if(this.getVelY()<-(this.getHeight()-1)){
 					this.setVelY(-(this.getHeight()-1));
 				}
+				
+				
+			
+				//saut
+				if (World.getBoard().isPressed("vK_Space")&&stable){
+					this.setVelY((-13)*World.gravity);
+					}		
 				
 				
 				//bas
@@ -113,19 +124,19 @@ public class Player extends PhysicObject{
 
 				//sur une platforme?
 				
-				stable=IsStableOn(this, "block",Objects);
+				//stable=IsStableOn(this, "block",Objects);
 				
 				
 				//saut
-					if (World.getBoard().isPressed("vK_Space")&&stable){
+					/*if (World.getBoard().isPressed("vK_Space")&&stable){
 						this.setVelY((-13)*World.gravity);
-						}		
+						}	*/	
 						
 					//vel en x et "friction"
 					if (World.getBoard().isPressed("vK_D")&&!World.getBoard().isPressed("vK_A")){
-						this.setVelX(this.getVelX()+4);
+						this.setVelX(this.getVelX()+6);
 					} else if(World.getBoard().isPressed("vK_A")&&!World.getBoard().isPressed("vK_D")){
-						this.setVelX(this.getVelX()-4);
+						this.setVelX(this.getVelX()-6);
 					} else if(stable&&this.getVelX()<0){
 						this.setVelX(this.getVelX()+2);
 					} else if (stable&&this.getVelX()>0){

@@ -8,7 +8,9 @@ import java.util.Scanner;
 
 public class World {
 	
-	static int gravity = 2;
+	static boolean completed = false;
+	
+	static int gravity = 3;
 	static int width = 800;
 	static Block[] walls;
 	static End end = new End(0, 0);
@@ -470,6 +472,14 @@ public class World {
 
 	public static void setObjects(ArrayList<PhysicObject> objects) {
 		Objects = objects;
+	}
+	
+	public static boolean getCompletion(){
+		return completed;
+	}
+	public static void setCompletion(boolean completed){
+		World.completed = completed;
+		
 	}
 
 }

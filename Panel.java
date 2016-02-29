@@ -12,6 +12,8 @@ public class Panel extends JPanel{
 	private Block[] walls = World.walls;
 	int x = 0;
 	int y = 0;
+	double mouseX;
+	double mouseY;
 	
 	public Panel(){
 		
@@ -29,6 +31,14 @@ public class Panel extends JPanel{
 	
 	public void paintComponent(Graphics g){
 		this.setLocation(x, y);
+		if(this.getMousePosition()!=null){
+			mouseX = this.getMousePosition().getX();
+			mouseY = this.getMousePosition().getY();
+		} else {
+			System.out.println("closed");
+		}
+		
+		
 		this.setBackground(Color.white);
 		g.setColor(Color.white);
 		
@@ -38,7 +48,7 @@ public class Panel extends JPanel{
 			
 		}
 		
-		while(x+1400<player.getX()){
+		while(x+(this.getWidth()-500)<player.getX()){
 			x++;
 		}
 		
@@ -48,7 +58,7 @@ public class Panel extends JPanel{
 			
 		}
 		
-		while(y+800<player.getY()){
+		while(y+(this.getHeight()-300)<player.getY()){
 			y++;
 		}
 		

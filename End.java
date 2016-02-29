@@ -27,8 +27,8 @@ public class End extends PhysicObject{
 	@Override
 	public void tick(ArrayList<PhysicObject> Objects){
 		
-		if(Collides(World.getPlayer(), "enemy",Objects)){
-			World.reset();
+		if(Collides(World.getPlayer(), "end",Objects)){
+			World.setCompletion(true);
 		}
 		
 	}

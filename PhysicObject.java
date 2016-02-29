@@ -179,9 +179,9 @@ public class PhysicObject {
 						&& Objects.get(i).getX()+Objects.get(i).getLenght()>=object.getX()
 						&&Objects.get(i).getType()==type){
 					stable = true;
-				
+					
 				}
-		
+				
 			}
 		}
 		if (World.gravity<0){
