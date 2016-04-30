@@ -35,7 +35,7 @@ public class Panel extends JPanel{
 			mouseX = this.getMousePosition().getX();
 			mouseY = this.getMousePosition().getY();
 		} else {
-			System.out.println("closed");
+			//System.out.println("closed");
 		}
 		
 		

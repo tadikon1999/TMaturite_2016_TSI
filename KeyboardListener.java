@@ -32,6 +32,14 @@ public class KeyboardListener extends KeyAdapter{
         case KeyEvent.VK_SPACE:    
         	keyboard.setVK_Space(true);
         	break;
+        case KeyEvent.VK_1:
+            // up arrow
+			keyboard.setVK_1(true);
+            break;
+        case KeyEvent.VK_2:
+            // up arrow
+			keyboard.setVK_2(true);
+            break;
         default:
         	break;
     

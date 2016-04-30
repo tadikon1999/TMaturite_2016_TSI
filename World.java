@@ -2,7 +2,6 @@ package tests;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.chrono.IsoChronology;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -10,25 +9,24 @@ public class World {
 	
 	static boolean completed = false;
 	
-	static int gravity = 3;
+	static int gravity = 2;
 	static int width = 800;
 	static Block[] walls;
 	static End end = new End(0, 0);
 	static Enemy[] enemies;
 	static Player player = new Player(0,0);
 	private static ArrayList<PhysicObject> Objects = new ArrayList<PhysicObject>();
-	private static Keyboard board = new Keyboard();
+	private static Keyboard board;
 	private DataReader reader = new DataReader();
 	private char[][] box;
 	
 	
 	
-	public World(String myFileLocation){
+	public World(String myFileLocation, Keyboard board){
 		
+		this.board = board;
 		
-		
-		String s = "error#1:no_file";
-		
+		String s = "error#1:no_file";		
 		
 		
 		try {
@@ -137,137 +135,7 @@ public class World {
 	
 	public void iterate(){
 		
-	/*	
-		//collision et mouvement vertical
-		boolean collision = false;
-		boolean stable = false;
-		player.setVelY(player.getVelY()+gravity);
-		
-		
-		//max verticale
-		if(player.getVelY()>player.getHeight()-1){
-			player.setVelY(player.getHeight()-1);
-		}else if(player.getVelY()<-(player.getHeight()-1)){
-			player.setVelY(-(player.getHeight()-1));
-		}
-		
-		
-		//bas
-		if(player.getVelY()>=0){
-		do {
-			
-			collision = false;
-
-		
-			collision=CollidesDown(player, "block",Objects);
-		
-		if (collision == true){
-			player.setVelY(player.getVelY()-1);
-		}
-		
-		
-		}while(collision == true);}
-		
-		
-		
-		if(player.getVelY()<=0){
-		//haut
-		do{
-			collision = false;
-		
 	
-			collision = CollidesUp(player, "block",Objects);
-		
-		if (collision == true){
-			player.setVelY(player.getVelY()+1);
-		}
-		
-		
-		//System.out.println(collision);
-		}while(collision == true);}
-		
-		
-
-		//sur une platforme?
-		
-		stable=IsStableOn(player, "block",Objects);
-		
-		
-		//saut
-			if (board.isPressed("vK_Space")&&stable){
-					player.setVelY((-13)*gravity);
-				}		
-				
-			//vel en x et "friction"
-			if (board.isPressed("vK_D")&&!board.isPressed("vK_A")){
-				player.setVelX(player.getVelX()+4);
-			} else if(board.isPressed("vK_A")&&!board.isPressed("vK_D")){
-				player.setVelX(player.getVelX()-4);
-			} else if(stable&&player.getVelX()<0){
-				player.setVelX(player.getVelX()+2);
-			} else if (stable&&player.getVelX()>0){
-				player.setVelX(player.getVelX()-2);
-			}
-		
-		
-		//horizontal
-		
-		//droite
-		if(player.getVelX()>=0){
-			do {
-				
-				collision = false;
-				
-				collision = CollidesRight(player, "block",Objects);
-			
-			if (collision == true){
-				player.setVelX(player.getVelX()-1);
-			}
-			
-			}while(collision == true);}
-			
-			
-			
-			if(player.getVelX()<0){
-			//gauche 
-			do{
-				collision = false;
-			
-			
-				collision = CollidesLeft(player, "block",Objects);
-			
-			if (collision == true){
-				player.setVelX(player.getVelX()+1);
-			} 
-			
-			
-			//System.out.println(collision);
-			}while(collision == true);}
-			
-			
-			
-		//max horizontal
-		
-		if (player.getVelX()<-12){
-			player.setVelX(-12);
-		}
-		if (player.getVelX()>12){
-			player.setVelX(12);
-		}
-		
-		if(Collides(player, "enemy",Objects)){
-			reset();
-		}
-		
-		//objet fin
-		if(Collides(player, "end",Objects)){
-			reset();
-		}
-		
-		
-		//mouvement en x et y!
-		player.setY(player.getY()+player.getVelY());
-		player.setX(player.getX()+player.getVelX());*/
 		
 		for(int i=0;i<Objects.size();i++){
 			Objects.get(i).tick(Objects);
@@ -281,13 +149,18 @@ public class World {
 		if(board.isPressed("vK_R")){
 			reset();
 		}
-		/*
-		if(board.isPressed("vK_W")&&stable){
-			gravity = -2;
-		} 
-		if(board.isPressed("vK_S")&&stable){
-			gravity = 2;
+		
+		/*//grav
+		
+		if(board.isPressed("vK_W")){
+			if (gravity<0){
+				gravity = 2;	
+			}else if (gravity>0){
+				gravity = -2;	
+			}	
+			
 		}*/
+			
 		
 		// TIME MASTER
 		try {
@@ -319,7 +192,7 @@ public class World {
 	}
 
 	public void setBoard(Keyboard board) {
-		this.board = board;
+		World.board = board;
 	}
 	
 	
@@ -331,128 +204,15 @@ public class World {
 	
 	
 	
-	//funcs de collisions!
-	//haut
-	private boolean CollidesUp(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
-		boolean collision = false;
-		
-		for (int i=0;i<Objects.size();i++){
-			if (player.getY()+player.getVelY()>=Objects.get(i).getY()
-					&& player.getY()+player.getVelY()<=Objects.get(i).getY()+Objects.get(i).getLenght()
-					&& Objects.get(i).getX()-player.getLenght()<=player.getX() 
-					&& Objects.get(i).getX()+Objects.get(i).getLenght()>=player.getX()
-					&&Objects.get(i).getType()==type){
-				collision = true;
-				} 
-			}
-		
-		return collision;
-		
-	}
+	
 
-	//bas
-	private boolean CollidesDown(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
-		boolean collision = false;
-		
-		for (int i=0;i<Objects.size();i++){
-			if (player.getY()+player.getVelY()+player.getHeight()>=Objects.get(i).getY()
-					&& player.getY()+player.getVelY()+player.getHeight()<=Objects.get(i).getY()+Objects.get(i).getHeight()
-					&& Objects.get(i).getX()-player.getLenght()<=player.getX() 
-					&& Objects.get(i).getX()+Objects.get(i).getLenght()>=player.getX()
-					&& Objects.get(i).getType()==type){
-				collision = true;
-				} 
-			}
-		
-		return collision;
-		
-	}
 
-	//droite
-	private boolean CollidesRight(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
-		boolean collision = false;
-		
-		for (int i=0;i<Objects.size();i++){
-			if (player.getX()+player.getVelX()+player.getLenght()>=Objects.get(i).getX()
-					&& player.getX()+player.getVelX()+player.getLenght()<=Objects.get(i).getX()+Objects.get(i).getLenght()
-					&& Objects.get(i).getY()-player.getHeight()<=player.getY() 
-					&& Objects.get(i).getY()+Objects.get(i).getHeight()>=player.getY()
-					&&Objects.get(i).getType()==type){
-				collision = true;
-				} 
-			}
-		
-		return collision;
-		
-	}
-
-	//gauche
-	private boolean CollidesLeft(PhysicObject player, String type, ArrayList<PhysicObject> Objects){
-		boolean collision = false;
-		
-		for (int i=0;i<Objects.size();i++){
-			if (player.getX()+player.getVelX()>=Objects.get(i).getX()
-					&& player.getX()+player.getVelX()<=Objects.get(i).getX()+Objects.get(i).getLenght()
-					&& Objects.get(i).getY()-player.getHeight()<=player.getY() 
-					&& Objects.get(i).getY()+Objects.get(i).getHeight()>=player.getY()
-					&&Objects.get(i).getType()==type){
-				collision = true;
-				} 
-			}
-		
-		return collision;
-		
-	}
-	
-	//stable?
 
 	
-	private boolean IsStableOn(PhysicObject object, String type, ArrayList<PhysicObject> Objects){
-		boolean stable = false;
-		if (gravity>0){
-			for (int i=0;i<Objects.size();i++){
-				if (object.getVelY()==0&&object.getY()+(object.getHeight()+1)==Objects.get(i).getY() 
-						&& Objects.get(i).getX()-object.getLenght()<=object.getX() 
-						&& Objects.get(i).getX()+Objects.get(i).getLenght()>=object.getX()
-						&&Objects.get(i).getType()==type){
-					stable = true;
-				
-				}
-		
-			}
-		}
-		if (gravity<0){
-			for (int i=0;i<Objects.size();i++){
-				if (object.getVelY()==0&&object.getY()-(Objects.get(i).getHeight()+1)==Objects.get(i).getY() 
-						&& Objects.get(i).getX()-object.getLenght()<=object.getX() 
-						&& Objects.get(i).getX()+Objects.get(i).getLenght()>=object.getX()
-						&&Objects.get(i).getType()==type){
-					stable = true;
-					
-				}
-			
-			}
-		}
-		
-		return stable;
-	}
 	
 
 	
-	private boolean Collides(PhysicObject object, String type, ArrayList<PhysicObject> Objects){
-		boolean col = false;
-		
-		for (int i=0;i<Objects.size();i++){
-		if (object.getX()+object.getLenght()>=Objects.get(i).getX()
-				&& object.getX()<=Objects.get(i).getX()+Objects.get(i).getLenght()
-				&& object.getY()+object.getHeight()>=Objects.get(i).getY() 
-				&& object.getY()<=Objects.get(i).getY()+Objects.get(i).getHeight()
-				&&Objects.get(i).getType()==type){
-			col = true;
-			}
-		}
-		return col; 
-	}
+
 	
 	
 	public static void reset(){

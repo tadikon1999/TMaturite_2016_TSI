@@ -11,6 +11,12 @@ public class Player extends PhysicObject{
 	boolean stable = false;
 		int startX;
 		int startY;
+		boolean fly = false;
+		int boostl = 0;
+		int boostr = 0;
+		int timingl = 0;
+		int timingr = 0;
+
 
 	public Player(int x, int y) {
 		super(x, y,false);
@@ -22,7 +28,7 @@ public class Player extends PhysicObject{
 		visible = true;
 		gravity = true;
 		type = "player";
-		color = Color.BLUE;
+		color = Color.blue;
 		
 	}
 
@@ -34,6 +40,14 @@ public class Player extends PhysicObject{
 
 	public void setStable(boolean b) {
 		stable = b;
+	}
+	
+	public boolean getFly() {
+		return fly;
+	}
+
+	public void setFly(boolean b) {
+		fly = b;
 	}
 	
 	public int getStartX() {
@@ -55,7 +69,8 @@ public class Player extends PhysicObject{
 	public void paint(Graphics g,int mx,int my){
 
 		g.setColor(this.getColor());
-		g.fillRect(this.getX()+mx, this.getY()+my, this.getLenght(), this.getHeight());
+		
+		g.fillRect(this.getX()+mx-1, this.getY()+my-1, this.getLenght()+2, this.getHeight()+2);
 		
 	}
 	
@@ -131,17 +146,71 @@ public class Player extends PhysicObject{
 					/*if (World.getBoard().isPressed("vK_Space")&&stable){
 						this.setVelY((-13)*World.gravity);
 						}	*/	
+				if(timingl>0){
+					timingl--;
+					
+				}else if (timingl<0){
+					timingl++;
+				}
+				if(timingr>0){
+					timingr--;System.out.println(timingr);
+				}else if (timingr<0){
+					timingr++;
+				}
+				
+				if(!World.getBoard().isPressed("vK_A")&&!World.getBoard().isPressed("vK_D")){
+					if(boostl==1&&boostr!=1){
+						timingl=10;
+						boostl=2;
+					}
+					if(boostr==1&&boostl!=1){
+						timingr=10;
+						boostr=2;
+					}
+				}
 						
 					//vel en x et "friction"
 					if (World.getBoard().isPressed("vK_D")&&!World.getBoard().isPressed("vK_A")){
-						this.setVelX(this.getVelX()+6);
+						if(boostr==0&&timingr>=0){
+							boostl=0;
+							boostr=1;
+						}
+						if(this.getVelX()<12){
+							this.setVelX(this.getVelX()+6);
+						}else{
+							this.setVelX(this.getVelX()-2);
+						}
+						if(boostr==2&&timingr>0){
+							boostr=0;
+							timingr=-60;
+							this.setVelX(this.getVelX()+40);
+							this.setVelY(this.getVelY()-4);
+						}
+						
 					} else if(World.getBoard().isPressed("vK_A")&&!World.getBoard().isPressed("vK_D")){
-						this.setVelX(this.getVelX()-6);
+						if(boostl==0&&timingl>=0){
+							boostr=0;
+							boostl=1;
+						}
+						if(this.getVelX()>-12){
+							this.setVelX(this.getVelX()-6);
+						}else{
+							this.setVelX(this.getVelX()+2);
+						}
+						
+						if(boostl==2&&timingl>0){
+							boostl=0;
+							timingl=-60;
+							this.setVelX(this.getVelX()-40);
+							this.setVelY(this.getVelY()-4);
+						}
 					} else if(stable&&this.getVelX()<0){
 						this.setVelX(this.getVelX()+2);
 					} else if (stable&&this.getVelX()>0){
 						this.setVelX(this.getVelX()-2);
 					}
+					
+					
 				
 				
 				//horizontal
@@ -182,11 +251,11 @@ public class Player extends PhysicObject{
 					
 				//max horizontal
 				
-				if (this.getVelX()<-12){
-					this.setVelX(-12);
+				if (this.getVelX()<-40){
+					this.setVelX(-40);
 				}
-				if (this.getVelX()>12){
-					this.setVelX(12);
+				if (this.getVelX()>40){
+					this.setVelX(40);
 				}
 				
 				
