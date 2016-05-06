@@ -12,7 +12,7 @@ public class Frame extends JFrame{
 	private Panel pan = new Panel();
 	public Frame(){
 		
-		this.setTitle("Yolo!");
+		this.setTitle("appuyez 1 ou 2");
 		this.setSize(2000, 2000);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

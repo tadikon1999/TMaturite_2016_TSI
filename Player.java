@@ -171,7 +171,7 @@ public class Player extends PhysicObject{
 						
 					//vel en x et "friction"
 					if (World.getBoard().isPressed("vK_D")&&!World.getBoard().isPressed("vK_A")){
-						if(boostr==0&&timingr>=0){
+						if(boostr==0&&timingr==0){
 							boostl=0;
 							boostr=1;
 						}
@@ -182,13 +182,13 @@ public class Player extends PhysicObject{
 						}
 						if(boostr==2&&timingr>0){
 							boostr=0;
-							timingr=-60;
+							timingr=-25	;
 							this.setVelX(this.getVelX()+40);
 							this.setVelY(this.getVelY()-4);
 						}
 						
 					} else if(World.getBoard().isPressed("vK_A")&&!World.getBoard().isPressed("vK_D")){
-						if(boostl==0&&timingl>=0){
+						if(boostl==0&&timingl==0){
 							boostr=0;
 							boostl=1;
 						}
@@ -200,7 +200,7 @@ public class Player extends PhysicObject{
 						
 						if(boostl==2&&timingl>0){
 							boostl=0;
-							timingl=-60;
+							timingl=-25;
 							this.setVelX(this.getVelX()-40);
 							this.setVelY(this.getVelY()-4);
 						}
@@ -214,6 +214,16 @@ public class Player extends PhysicObject{
 				
 				
 				//horizontal
+					
+					//max horizontal
+					
+					if (this.getVelX()<-40){
+						this.setVelX(-40);
+					}
+					if (this.getVelX()>40){
+						this.setVelX(40);
+					}
+					
 				
 				//droite
 				if(this.getVelX()>=0){
@@ -249,14 +259,6 @@ public class Player extends PhysicObject{
 					
 					
 					
-				//max horizontal
-				
-				if (this.getVelX()<-40){
-					this.setVelX(-40);
-				}
-				if (this.getVelX()>40){
-					this.setVelX(40);
-				}
 				
 				
 				//mouvement en x et y!
