@@ -22,13 +22,14 @@ public class End extends PhysicObject{
 
 		g.setColor(this.getColor());
 		g.fillRect(this.getX()+mx, this.getY()+my, this.getLenght(), this.getHeight());
-		
+	
 	}
 	@Override
 	public void tick(ArrayList<PhysicObject> Objects){
 		
 		if(Collides(World.getPlayer(), "end",Objects)){
-			World.setCompletion(true);
+			Main.getWorld().setCompletion(true);
+			Main.setState("menu");
 		}
 		
 	}

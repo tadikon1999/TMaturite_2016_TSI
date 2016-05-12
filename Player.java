@@ -96,7 +96,7 @@ public class Player extends PhysicObject{
 				
 			
 				//saut
-				if (World.getBoard().isPressed("vK_Space")&&stable){
+				if (Main.getWorld().getBoard().isPressed("vK_Space")&&stable){
 					this.setVelY((-13)*World.gravity);
 					}		
 				
@@ -153,12 +153,12 @@ public class Player extends PhysicObject{
 					timingl++;
 				}
 				if(timingr>0){
-					timingr--;System.out.println(timingr);
+					timingr--;
 				}else if (timingr<0){
 					timingr++;
 				}
 				
-				if(!World.getBoard().isPressed("vK_A")&&!World.getBoard().isPressed("vK_D")){
+				if(!Main.getWorld().getBoard().isPressed("vK_A")&&!Main.getWorld().getBoard().isPressed("vK_D")){
 					if(boostl==1&&boostr!=1){
 						timingl=10;
 						boostl=2;
@@ -170,7 +170,7 @@ public class Player extends PhysicObject{
 				}
 						
 					//vel en x et "friction"
-					if (World.getBoard().isPressed("vK_D")&&!World.getBoard().isPressed("vK_A")){
+					if (Main.getWorld().getBoard().isPressed("vK_D")&&!Main.getWorld().getBoard().isPressed("vK_A")){
 						if(boostr==0&&timingr==0){
 							boostl=0;
 							boostr=1;
@@ -187,7 +187,7 @@ public class Player extends PhysicObject{
 							this.setVelY(this.getVelY()-4);
 						}
 						
-					} else if(World.getBoard().isPressed("vK_A")&&!World.getBoard().isPressed("vK_D")){
+					} else if(Main.getWorld().getBoard().isPressed("vK_A")&&!Main.getWorld().getBoard().isPressed("vK_D")){
 						if(boostl==0&&timingl==0){
 							boostr=0;
 							boostl=1;
@@ -264,6 +264,7 @@ public class Player extends PhysicObject{
 				//mouvement en x et y!
 				this.setY(this.getY()+this.getVelY());
 				this.setX(this.getX()+this.getVelX());
+				
 				
 				
 	}

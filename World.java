@@ -15,10 +15,12 @@ public class World {
 	static End end = new End(0, 0);
 	static Enemy[] enemies;
 	static Player player = new Player(0,0);
-	private static ArrayList<PhysicObject> Objects = new ArrayList<PhysicObject>();
-	private static Keyboard board;
+	private  ArrayList<PhysicObject> Objects = new ArrayList<PhysicObject>();
+	private  Keyboard board;
 	private DataReader reader = new DataReader();
 	private char[][] box;
+	
+
 	
 	
 	
@@ -34,7 +36,7 @@ public class World {
 		} catch (IOException e) {
 			
 		}
-		System.out.println(s);
+		//System.out.println(s);
 		int i =1;
 		int lenght = 0;
 		int height;
@@ -128,14 +130,26 @@ public class World {
 		player.setY(player.getStartY());
 		
 		Objects.add(player);
+		/*int j=0;
+		for(int n=0;i<Objects.size();i++){
+			if(Objects.get(i).getType()=="block"){
+				j++;
+			}
+		}
+		System.out.println(j);*/
 	
-		
+		/*for (int j =0;j<height;j++){
+			for(int m =0;m<lenght;m++){
+				System.out.print(box[m][j]);
+				
+			}
+			System.out.println();
+		}*/
 
 	}
 	
 	public void iterate(){
 		
-	
 		
 		for(int i=0;i<Objects.size();i++){
 			Objects.get(i).tick(Objects);
@@ -187,12 +201,12 @@ public class World {
 		return walls;
 	}
 
-	public static Keyboard getBoard() {
+	public  Keyboard getBoard() {
 		return board;
 	}
 
-	public void setBoard(Keyboard board) {
-		World.board = board;
+	public void setBoard(Keyboard b) {
+		board = b;
 	}
 	
 	
@@ -226,18 +240,18 @@ public class World {
 	
 	
 	
-	public static ArrayList<PhysicObject> getObjects() {
+	public  ArrayList<PhysicObject> getObjects() {
 		return Objects;
 	}
 
-	public static void setObjects(ArrayList<PhysicObject> objects) {
+	public  void setObjects(ArrayList<PhysicObject> objects) {
 		Objects = objects;
 	}
 	
-	public static boolean getCompletion(){
+	public  boolean getCompletion(){
 		return completed;
 	}
-	public static void setCompletion(boolean completed){
+	public  void setCompletion(boolean completed){
 		World.completed = completed;
 		
 	}

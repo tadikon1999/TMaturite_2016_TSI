@@ -69,9 +69,9 @@ public class Panel extends JPanel{
 		
 		//this.setLocation(-player.getX()+450, -player.getY()+450);
 
-		for(int i=0;i<World.getObjects().size();i++){
+		for(int i=0;i<Main .getWorld().getObjects().size();i++){
 				
-			World.getObjects().get(i).paint(g, -x, -y);
+			Main.getWorld().getObjects().get(i).paint(g, -x, -y);
 			
 		}
 		/*
@@ -86,6 +86,15 @@ public class Panel extends JPanel{
 		g.setColor(Color.red);
 		g.fillRect(World.end.getX(), World.end.getY(), World.end.getLenght(), World.end.getHeight());
 	*/}
+	
+	public double getMouseX(){
+		return this.mouseX;
+	}
+	
+	public double getMouseY(){
+		return this.mouseY;
+	}
+
 
 	
 	
