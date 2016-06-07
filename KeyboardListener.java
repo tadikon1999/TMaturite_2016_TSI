@@ -1,9 +1,14 @@
 package tests;
 
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class KeyboardListener extends KeyAdapter{
+import javax.swing.event.MouseInputListener;
+
+public class KeyboardListener extends KeyAdapter implements MouseListener{
 	
 	private Keyboard keyboard = new Keyboard();
 		
@@ -97,5 +102,66 @@ public class KeyboardListener extends KeyAdapter{
 
 	public void setKeyboard(Keyboard keyboard) {
 		this.keyboard = keyboard;
+	}
+
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+		switch(e.getButton()){
+		case 1:
+			keyboard.setbT_1(true);
+			break;
+		case 2:
+			keyboard.setbT_2(true);
+			break;
+		case 3:
+			keyboard.setbT_3(true);
+			break;
+		default:
+			break;
+		}
+		
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		switch(e.getButton()){
+		case 1:
+			keyboard.setbT_1(false);
+			break;
+		case 2:
+			keyboard.setbT_2(false);
+			break;
+		case 3:
+			keyboard.setbT_3(false);
+			break;
+		default:
+			break;
+		}
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

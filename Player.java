@@ -2,6 +2,7 @@ package tests;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Player extends PhysicObject{
@@ -65,14 +66,14 @@ public class Player extends PhysicObject{
 	public void setStartY(int y) {
 		this.startY = y;
 	}
-	@Override
-	public void paint(Graphics g,int mx,int my){
+	/*@Override
+	public void paint(Graphics g,int mx,int my,BuffedImage img){
 
 		g.setColor(this.getColor());
 		
-		g.fillRect(this.getX()+mx-1, this.getY()+my-1, this.getLenght()+2, this.getHeight()+2);
-		
-	}
+		//g.fillRect(this.getX()+mx-1, this.getY()+my-1, this.getLenght()+2, this.getHeight()+2);
+		g.drawImage(img, this.getX()+mx-1, this.getY()+my-1,lenght+2,height+2, null);
+	}*/
 	
 	@Override
 	public void tick(ArrayList<PhysicObject> Objects){
@@ -265,7 +266,12 @@ public class Player extends PhysicObject{
 				this.setY(this.getY()+this.getVelY());
 				this.setX(this.getX()+this.getVelX());
 				
-				
+				if(this.getVelX()==1){
+					this.setVelX(0);
+				}
+				if(this.getVelY()==1){
+					this.setVelY(0);
+				}
 				
 	}
 	

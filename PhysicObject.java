@@ -2,6 +2,7 @@ package tests;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class PhysicObject {
@@ -12,6 +13,8 @@ public class PhysicObject {
 	int velY;
 	int velX;
 	String type = "none";
+	int state = 1;
+	GraphicObject sprite;
 	
 	boolean visible = false;
 	boolean gravity = false;
@@ -81,8 +84,16 @@ public class PhysicObject {
 	
 	//methods to override
 	
-	public void paint( Graphics g,int mx, int my){
-		
+	public void paint( Graphics g,int mx, int my,ArrayList<BuffedImage> img){
+		for(int i=0;i<img.size();i++){
+			//System.out.println((type+state));
+			if( img.get(i).getName().equals((type+state))){
+				
+				g.setColor(this.getColor());
+				//g.fillRect(this.getX()+mx-1, this.getY()+my-1, this.getLenght()+2, this.getHeight()+2);
+				g.drawImage(img.get(i).getImage(), this.getX()+mx-1, this.getY()+my-1,lenght+2,height+2, null);
+			}
+		}
 	}
 	
 	public void tick(ArrayList<PhysicObject> list){

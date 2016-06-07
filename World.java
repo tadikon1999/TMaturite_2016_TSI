@@ -11,9 +11,9 @@ public class World {
 	
 	static int gravity = 2;
 	static int width = 800;
-	static Block[] walls;
+	
 	static End end = new End(0, 0);
-	static Enemy[] enemies;
+	
 	static Player player = new Player(0,0);
 	private  ArrayList<PhysicObject> Objects = new ArrayList<PhysicObject>();
 	private  Keyboard board;
@@ -93,8 +93,8 @@ public class World {
 			
 		}
 		
-		walls = new Block[blocks];
-		enemies = new Enemy[ene];
+		
+		
 		
 		blocks = 0;
 		ene = 0;
@@ -103,13 +103,13 @@ public class World {
 			for(int m =0;m<height;m++){
 				if(box[j][m]=='0'){
 					
-					World.walls[blocks] = new Block(j*40,m*40);
+					
 					blocks++;
 					Objects.add(new Block(j*40,m*40));
 				}
 				if(box[j][m]=='m'){
 					
-					World.enemies[ene] = new Enemy(j*40,m*40);
+					
 					ene++;
 					Objects.add(new Enemy(j*40,m*40));
 				}
@@ -197,9 +197,8 @@ public class World {
 		return player;
 	}
 	
-	public Block[] getBlocks(){
-		return walls;
-	}
+	//public Block[] getBlocks(){
+	//}
 
 	public  Keyboard getBoard() {
 		return board;

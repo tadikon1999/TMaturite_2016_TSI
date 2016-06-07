@@ -2,6 +2,7 @@ package tests;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Block extends PhysicObject{
@@ -15,16 +16,20 @@ public class Block extends PhysicObject{
 		height = 40;
 		visible = true;
 		type = "block";
+		int j=(int) (Math.random()*10);
+		if(j<1){
+			state=3;
+		}else if(j<3){
+			state=2;
+		}else if(j<=10){
+			state=1;
+		}
+		
 		
 		color = Color.darkGray;
 	}
 	
-	public void paint(Graphics g,int mx,int my){
-
-		g.setColor(this.getColor());
-		g.fillRect(this.getX()+mx, this.getY()+my, this.getLenght(), this.getHeight());
-		
-	}
+	
 	@Override
 	public void tick(ArrayList<PhysicObject> Objects){
 		

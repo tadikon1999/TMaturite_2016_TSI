@@ -9,8 +9,8 @@ public class Frame extends JFrame{
 	
 	private KeyboardListener listener = new KeyboardListener();
 	
-	private Panel pan = new Panel();
-	//private Bouton button = new Bouton("bouton 1");
+	private Panel pan = new Panel(listener.getKeyboard());
+	
 	public Frame(){
 		
 		this.setTitle("appuyez 1 ou 2");
@@ -20,9 +20,9 @@ public class Frame extends JFrame{
 		
 		this.setContentPane(pan);
 		this.addKeyListener(listener);
-		//pan.add(button);
+		this.addMouseListener(listener);
 		this.setVisible(true);
-		this.setBackground(Color.white);
+		this.setBackground(Color.getHSBColor(0, 91, 17));
 		
 	}
 	public Panel getPan() {

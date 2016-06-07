@@ -22,9 +22,10 @@ public class Main {
 		//http://stackoverflow.com/questions/941754/how-to-get-a-path-to-a-resource-in-a-java-jar-file
 		s = Main.class.getClassLoader().getResource("").toExternalForm();
 		System.out.println(s);
+		s=s.substring(6);
 		Frame display=new Frame();
 		Mboard=display.getListener().getKeyboard();
-		s=s.substring(6);
+		
 		
 		
 		
@@ -49,9 +50,6 @@ public class Main {
 					 world=new World(s, Mboard);
 					while(world.getCompletion()==false){
 						
-						
-						display.getPan().setPlayer(world.getPlayer());
-						display.getPan().setBlocks(world.getBlocks());
 						display.getPan().repaint();
 						world.iterate();
 					
@@ -86,6 +84,12 @@ public class Main {
 	}
 	public static void setWorld(World w){
 		world=w;
+	}
+	static public String getPath(){
+		return s;
+	}
+	static public void setPath(String path){
+		s = path;
 	}
 	
 	
