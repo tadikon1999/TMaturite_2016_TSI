@@ -185,7 +185,7 @@ public class Player extends PhysicObject{
 							boostr=0;
 							timingr=-25	;
 							this.setVelX(this.getVelX()+40);
-							this.setVelY(this.getVelY()-4);
+							//this.setVelY(this.getVelY()-4);
 						}
 						
 					} else if(Main.getWorld().getBoard().isPressed("vK_A")&&!Main.getWorld().getBoard().isPressed("vK_D")){
@@ -203,12 +203,16 @@ public class Player extends PhysicObject{
 							boostl=0;
 							timingl=-25;
 							this.setVelX(this.getVelX()-40);
-							this.setVelY(this.getVelY()-4);
+							//this.setVelY(this.getVelY()-4);
 						}
+					} else if(stable&&this.getVelX()<-3){
+						this.setVelX(this.getVelX()+4);
+					} else if(stable&&this.getVelX()>3){
+						this.setVelX(this.getVelX()-4);
 					} else if(stable&&this.getVelX()<0){
-						this.setVelX(this.getVelX()+2);
-					} else if (stable&&this.getVelX()>0){
-						this.setVelX(this.getVelX()-2);
+						this.setVelX(this.getVelX()-this.getVelX());
+					} else if(stable&&this.getVelX()>0){
+						this.setVelX(this.getVelX()-this.getVelX());
 					}
 					
 					

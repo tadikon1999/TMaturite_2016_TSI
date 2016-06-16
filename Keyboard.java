@@ -7,6 +7,7 @@ public class Keyboard {
 	private boolean vK_D =false;
 	private boolean vK_R =false;
 	private boolean vK_Space =false;
+	private boolean vK_Escape =false;
 	private boolean vK_1 =false;
 	private boolean vK_2 =false;
 	private boolean bT_1 =false;
@@ -28,6 +29,8 @@ public class Keyboard {
 			return vK_R;
 		case "vK_Space":
 			return vK_Space;
+		case "vK_Escape":
+			return vK_Escape;
 		case "vK_1":
 			return vK_1;
 		case "vK_2":
@@ -77,6 +80,11 @@ public class Keyboard {
 	}
 	public void setbT_3(boolean bT_3) {
 		this.bT_3 = bT_3;
+	}
+
+	public void setVK_Escape(boolean b) {
+		this.vK_Escape=b;
+		
 	}
 	
 	

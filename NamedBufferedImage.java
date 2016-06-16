@@ -3,11 +3,11 @@ package tests;
 import java.awt.image.BufferedImage;
 
 
-public class BuffedImage {
+public class NamedBufferedImage {
 	
 	String name;
 	BufferedImage image;
-	public BuffedImage(BufferedImage img, String n){
+	public NamedBufferedImage(BufferedImage img, String n){
 		name= n;
 		image= img;
 	}

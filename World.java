@@ -153,6 +153,7 @@ public class World {
 		
 		for(int i=0;i<Objects.size();i++){
 			Objects.get(i).tick(Objects);
+			Objects.get(i).getSprite().tick(Main.getFrame().getPan());
 		}
 		
 		
@@ -176,13 +177,7 @@ public class World {
 		}*/
 			
 		
-		// TIME MASTER
-		try {
-			Thread.sleep(40);
-		} catch (InterruptedException e) {
-			
-			e.printStackTrace();
-		}
+		
 		
 	}
 	

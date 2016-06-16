@@ -46,6 +46,10 @@ public class KeyboardListener extends KeyAdapter implements MouseListener{
             // up arrow
 			keyboard.setVK_2(true);
             break;
+        case KeyEvent.VK_ESCAPE:
+            // up arrow
+			keyboard.setVK_Escape(true);
+            break;
         default:
         	break;
     

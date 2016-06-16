@@ -2,8 +2,9 @@ package tests;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import javax.swing.RepaintManager;
 
 public class PhysicObject {
 	int x;
@@ -26,6 +27,7 @@ public class PhysicObject {
 		this.x = x;
 		this.y = y;
 		this.solid = solid;
+		sprite = new Sprite(this);
 	}
 	
 	public int getX(){
@@ -84,7 +86,7 @@ public class PhysicObject {
 	
 	//methods to override
 	
-	public void paint( Graphics g,int mx, int my,ArrayList<BuffedImage> img){
+	public void paint( Graphics g,int mx, int my,ArrayList<NamedBufferedImage> img){
 		for(int i=0;i<img.size();i++){
 			//System.out.println((type+state));
 			if( img.get(i).getName().equals((type+state))){
@@ -92,6 +94,8 @@ public class PhysicObject {
 				g.setColor(this.getColor());
 				//g.fillRect(this.getX()+mx-1, this.getY()+my-1, this.getLenght()+2, this.getHeight()+2);
 				g.drawImage(img.get(i).getImage(), this.getX()+mx-1, this.getY()+my-1,lenght+2,height+2, null);
+				
+				
 			}
 		}
 	}
@@ -226,5 +230,15 @@ public class PhysicObject {
 			}
 		}
 		return col; 
+	}
+
+	public GraphicObject getSprite() {
+		// TODO Auto-generated method stub
+		return sprite;
+	}
+
+	public int getState() {
+		// TODO Auto-generated method stub
+		return state;
 	}
 }
