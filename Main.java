@@ -61,6 +61,9 @@ public class Main {
 				 if(state=="level1"){
 					 soundPlayer.playSound("mu1");
 				 }
+				 if(state=="level2"){
+					 soundPlayer.playSound("mu2");
+				 }
 			 }
 			 if(state.length()>4){
 				 if(state.substring(0,5).contains("level")){
